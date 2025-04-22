@@ -7,20 +7,25 @@ Grammar
 
     0 $accept: program $end
 
-    1 program: FUNC IDENT LPAR RPAR LCUR RCUR
+    1 program: functions
+
+    2 functions: function functions
+    3          | ε
+
+    4 function: FUNC IDENT LPAR RPAR LCUR RCUR
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
     error (256)
-    IDENT (258) 1
+    IDENT (258) 4
     NUMBER (259)
-    FUNC (260) 1
-    RPAR (261) 1
-    LPAR (262) 1
-    RCUR (263) 1
-    LCUR (264) 1
+    FUNC (260) 4
+    RPAR (261) 4
+    LPAR (262) 4
+    RCUR (263) 4
+    LCUR (264) 4
 
 
 Nonterminals, with rules where they appear
@@ -30,6 +35,12 @@ Nonterminals, with rules where they appear
     program (11)
         on left: 1
         on right: 0
+    functions (12)
+        on left: 2 3
+        on right: 1 2
+    function (13)
+        on left: 4
+        on right: 2
 
 
 State 0
@@ -38,60 +49,90 @@ State 0
 
     FUNC  shift, and go to state 1
 
-    program  go to state 2
+    $default  reduce using rule 3 (functions)
+
+    program    go to state 2
+    functions  go to state 3
+    function   go to state 4
 
 
 State 1
 
-    1 program: FUNC • IDENT LPAR RPAR LCUR RCUR
+    4 function: FUNC • IDENT LPAR RPAR LCUR RCUR
 
-    IDENT  shift, and go to state 3
+    IDENT  shift, and go to state 5
 
 
 State 2
 
     0 $accept: program • $end
 
-    $end  shift, and go to state 4
+    $end  shift, and go to state 6
 
 
 State 3
 
-    1 program: FUNC IDENT • LPAR RPAR LCUR RCUR
+    1 program: functions •
 
-    LPAR  shift, and go to state 5
+    $default  reduce using rule 1 (program)
 
 
 State 4
+
+    2 functions: function • functions
+
+    FUNC  shift, and go to state 1
+
+    $default  reduce using rule 3 (functions)
+
+    functions  go to state 7
+    function   go to state 4
+
+
+State 5
+
+    4 function: FUNC IDENT • LPAR RPAR LCUR RCUR
+
+    LPAR  shift, and go to state 8
+
+
+State 6
 
     0 $accept: program $end •
 
     $default  accept
 
 
-State 5
-
-    1 program: FUNC IDENT LPAR • RPAR LCUR RCUR
-
-    RPAR  shift, and go to state 6
-
-
-State 6
-
-    1 program: FUNC IDENT LPAR RPAR • LCUR RCUR
-
-    LCUR  shift, and go to state 7
-
-
 State 7
 
-    1 program: FUNC IDENT LPAR RPAR LCUR • RCUR
+    2 functions: function functions •
 
-    RCUR  shift, and go to state 8
+    $default  reduce using rule 2 (functions)
 
 
 State 8
 
-    1 program: FUNC IDENT LPAR RPAR LCUR RCUR •
+    4 function: FUNC IDENT LPAR • RPAR LCUR RCUR
 
-    $default  reduce using rule 1 (program)
+    RPAR  shift, and go to state 9
+
+
+State 9
+
+    4 function: FUNC IDENT LPAR RPAR • LCUR RCUR
+
+    LCUR  shift, and go to state 10
+
+
+State 10
+
+    4 function: FUNC IDENT LPAR RPAR LCUR • RCUR
+
+    RCUR  shift, and go to state 11
+
+
+State 11
+
+    4 function: FUNC IDENT LPAR RPAR LCUR RCUR •
+
+    $default  reduce using rule 4 (function)

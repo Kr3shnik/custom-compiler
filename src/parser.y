@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 int yylex();
-void yyerror(const char *s);
+int yyerror(const char *s);
 
 %}
 
@@ -16,13 +16,28 @@ void yyerror(const char *s);
 %start program
 
 %%
-program: FUNC IDENT LPAR RPAR LCUR RCUR {printf("program FUNC IDENT LPAR RPAR LCUR RCUR ");}
+
+program:    functions {printf("program -> functions\n");}
+
+functions:  function functions {printf("function -> function functions\n");}
+         |  %empty {printf("functions -> empty\n");}
+        
+
+function:   FUNC IDENT LPAR RPAR LCUR RCUR {printf("program FUNC IDENT LPAR RPAR LCUR RCUR\n");}
 %%
 
 int main(void){
-    yyparse();
+    int result = yyparse();
+    if (result == 0) {
+        // Successfully parsed
+        return 0;
+    } else {
+        // Parsing error occurred
+        return 1;
+    }
 }
 
-void yyerror(const char *s){
+int yyerror(const char *s){
     printf("Error: %s\n",s);
+    return 1;
 }
