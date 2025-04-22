@@ -6,13 +6,18 @@
 %}
 
 %%
-[0-9]+      {return NUMBER;}
+"print"     {return PRINT;}
+"int"       {return INT_KEYWORD;}
 "func"      {return FUNC;}
 "("         {return LPAR;}
 ")"         {return RPAR;}
 "{"         {return LCUR;}
 "}"         {return RCUR;}
-[a-z]+      {return IDENT;}
+";"         {return SEMICOLON;}
+"="         {return EQUAL;}
+"+"         {return PLUS;}
+[a-zA-Z]+   {return IDENT;}
+[0-9]+      {return NUMBER;}
 [ \t\n]     {}
 %%
 

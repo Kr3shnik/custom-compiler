@@ -1,8 +1,3 @@
-Terminals unused in grammar
-
-    NUMBER
-
-
 Grammar
 
     0 $accept: program $end
@@ -12,35 +7,60 @@ Grammar
     2 functions: function functions
     3          | ε
 
-    4 function: FUNC IDENT LPAR RPAR LCUR RCUR
+    4 function: FUNC IDENT LPAR RPAR LCUR statements RCUR
+
+    5 statements: statement statements
+    6           | ε
+
+    7 statement: PRINT LPAR variable RPAR SEMICOLON
+    8          | IDENT EQUAL variable PLUS variable SEMICOLON
+    9          | IDENT EQUAL variable SEMICOLON
+   10          | INT_KEYWORD IDENT SEMICOLON
+
+   11 variable: IDENT
+   12         | NUMBER
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
     error (256)
-    IDENT (258) 4
-    NUMBER (259)
+    IDENT (258) 4 8 9 10 11
+    NUMBER (259) 12
     FUNC (260) 4
-    RPAR (261) 4
-    LPAR (262) 4
+    RPAR (261) 4 7
+    LPAR (262) 4 7
     RCUR (263) 4
     LCUR (264) 4
+    PRINT (265) 7
+    SEMICOLON (266) 7 8 9 10
+    INT_KEYWORD (267) 10
+    EQUAL (268) 8 9
+    PLUS (269) 8
 
 
 Nonterminals, with rules where they appear
 
-    $accept (10)
+    $accept (15)
         on left: 0
-    program (11)
+    program (16)
         on left: 1
         on right: 0
-    functions (12)
+    functions (17)
         on left: 2 3
         on right: 1 2
-    function (13)
+    function (18)
         on left: 4
         on right: 2
+    statements (19)
+        on left: 5 6
+        on right: 4 5
+    statement (20)
+        on left: 7 8 9 10
+        on right: 5
+    variable (21)
+        on left: 11 12
+        on right: 7 8 9
 
 
 State 0
@@ -58,7 +78,7 @@ State 0
 
 State 1
 
-    4 function: FUNC • IDENT LPAR RPAR LCUR RCUR
+    4 function: FUNC • IDENT LPAR RPAR LCUR statements RCUR
 
     IDENT  shift, and go to state 5
 
@@ -91,7 +111,7 @@ State 4
 
 State 5
 
-    4 function: FUNC IDENT • LPAR RPAR LCUR RCUR
+    4 function: FUNC IDENT • LPAR RPAR LCUR statements RCUR
 
     LPAR  shift, and go to state 8
 
@@ -112,27 +132,194 @@ State 7
 
 State 8
 
-    4 function: FUNC IDENT LPAR • RPAR LCUR RCUR
+    4 function: FUNC IDENT LPAR • RPAR LCUR statements RCUR
 
     RPAR  shift, and go to state 9
 
 
 State 9
 
-    4 function: FUNC IDENT LPAR RPAR • LCUR RCUR
+    4 function: FUNC IDENT LPAR RPAR • LCUR statements RCUR
 
     LCUR  shift, and go to state 10
 
 
 State 10
 
-    4 function: FUNC IDENT LPAR RPAR LCUR • RCUR
+    4 function: FUNC IDENT LPAR RPAR LCUR • statements RCUR
 
-    RCUR  shift, and go to state 11
+    IDENT        shift, and go to state 11
+    PRINT        shift, and go to state 12
+    INT_KEYWORD  shift, and go to state 13
+
+    $default  reduce using rule 6 (statements)
+
+    statements  go to state 14
+    statement   go to state 15
 
 
 State 11
 
-    4 function: FUNC IDENT LPAR RPAR LCUR RCUR •
+    8 statement: IDENT • EQUAL variable PLUS variable SEMICOLON
+    9          | IDENT • EQUAL variable SEMICOLON
+
+    EQUAL  shift, and go to state 16
+
+
+State 12
+
+    7 statement: PRINT • LPAR variable RPAR SEMICOLON
+
+    LPAR  shift, and go to state 17
+
+
+State 13
+
+   10 statement: INT_KEYWORD • IDENT SEMICOLON
+
+    IDENT  shift, and go to state 18
+
+
+State 14
+
+    4 function: FUNC IDENT LPAR RPAR LCUR statements • RCUR
+
+    RCUR  shift, and go to state 19
+
+
+State 15
+
+    5 statements: statement • statements
+
+    IDENT        shift, and go to state 11
+    PRINT        shift, and go to state 12
+    INT_KEYWORD  shift, and go to state 13
+
+    $default  reduce using rule 6 (statements)
+
+    statements  go to state 20
+    statement   go to state 15
+
+
+State 16
+
+    8 statement: IDENT EQUAL • variable PLUS variable SEMICOLON
+    9          | IDENT EQUAL • variable SEMICOLON
+
+    IDENT   shift, and go to state 21
+    NUMBER  shift, and go to state 22
+
+    variable  go to state 23
+
+
+State 17
+
+    7 statement: PRINT LPAR • variable RPAR SEMICOLON
+
+    IDENT   shift, and go to state 21
+    NUMBER  shift, and go to state 22
+
+    variable  go to state 24
+
+
+State 18
+
+   10 statement: INT_KEYWORD IDENT • SEMICOLON
+
+    SEMICOLON  shift, and go to state 25
+
+
+State 19
+
+    4 function: FUNC IDENT LPAR RPAR LCUR statements RCUR •
 
     $default  reduce using rule 4 (function)
+
+
+State 20
+
+    5 statements: statement statements •
+
+    $default  reduce using rule 5 (statements)
+
+
+State 21
+
+   11 variable: IDENT •
+
+    $default  reduce using rule 11 (variable)
+
+
+State 22
+
+   12 variable: NUMBER •
+
+    $default  reduce using rule 12 (variable)
+
+
+State 23
+
+    8 statement: IDENT EQUAL variable • PLUS variable SEMICOLON
+    9          | IDENT EQUAL variable • SEMICOLON
+
+    SEMICOLON  shift, and go to state 26
+    PLUS       shift, and go to state 27
+
+
+State 24
+
+    7 statement: PRINT LPAR variable • RPAR SEMICOLON
+
+    RPAR  shift, and go to state 28
+
+
+State 25
+
+   10 statement: INT_KEYWORD IDENT SEMICOLON •
+
+    $default  reduce using rule 10 (statement)
+
+
+State 26
+
+    9 statement: IDENT EQUAL variable SEMICOLON •
+
+    $default  reduce using rule 9 (statement)
+
+
+State 27
+
+    8 statement: IDENT EQUAL variable PLUS • variable SEMICOLON
+
+    IDENT   shift, and go to state 21
+    NUMBER  shift, and go to state 22
+
+    variable  go to state 29
+
+
+State 28
+
+    7 statement: PRINT LPAR variable RPAR • SEMICOLON
+
+    SEMICOLON  shift, and go to state 30
+
+
+State 29
+
+    8 statement: IDENT EQUAL variable PLUS variable • SEMICOLON
+
+    SEMICOLON  shift, and go to state 31
+
+
+State 30
+
+    7 statement: PRINT LPAR variable RPAR SEMICOLON •
+
+    $default  reduce using rule 7 (statement)
+
+
+State 31
+
+    8 statement: IDENT EQUAL variable PLUS variable SEMICOLON •
+
+    $default  reduce using rule 8 (statement)

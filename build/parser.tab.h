@@ -60,7 +60,12 @@ extern int yydebug;
     RPAR = 261,                    /* RPAR  */
     LPAR = 262,                    /* LPAR  */
     RCUR = 263,                    /* RCUR  */
-    LCUR = 264                     /* LCUR  */
+    LCUR = 264,                    /* LCUR  */
+    PRINT = 265,                   /* PRINT  */
+    SEMICOLON = 266,               /* SEMICOLON  */
+    INT_KEYWORD = 267,             /* INT_KEYWORD  */
+    EQUAL = 268,                   /* EQUAL  */
+    PLUS = 269                     /* PLUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

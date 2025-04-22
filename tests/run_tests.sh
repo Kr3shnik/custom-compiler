@@ -7,7 +7,6 @@ declare -i FAIL=0
 
 echo "🔎 Running FAILURE tests (should fail)..."
 for file in tests/failure/*; do
-    echo $file
     if build/parser < "$file" > /dev/null 2>&1; then
         echo "❌ FAIL: $file (unexpected success)"
         FAIL+=1

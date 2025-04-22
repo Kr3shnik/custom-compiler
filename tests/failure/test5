@@ -1,0 +1,13 @@
+func main(){
+	print(0);
+	print(a);
+	print(v);
+}
+func add(){
+	int a;
+	a=1+1;
+	a=b;
+	a=2;
+	a=b+b:
+	a=1+b;
+}
