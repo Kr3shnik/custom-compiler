@@ -56,16 +56,24 @@ extern int yydebug;
     YYUNDEF = 257,                 /* "invalid token"  */
     IDENT = 258,                   /* IDENT  */
     NUMBER = 259,                  /* NUMBER  */
-    FUNC = 260,                    /* FUNC  */
+    FLOAT = 260,                   /* FLOAT  */
     RPAR = 261,                    /* RPAR  */
     LPAR = 262,                    /* LPAR  */
     RCUR = 263,                    /* RCUR  */
     LCUR = 264,                    /* LCUR  */
-    PRINT = 265,                   /* PRINT  */
-    SEMICOLON = 266,               /* SEMICOLON  */
-    INT_KEYWORD = 267,             /* INT_KEYWORD  */
-    EQUAL = 268,                   /* EQUAL  */
-    PLUS = 269                     /* PLUS  */
+    EQUAL = 265,                   /* EQUAL  */
+    COMMA = 266,                   /* COMMA  */
+    SEMICOLON = 267,               /* SEMICOLON  */
+    PLUS = 268,                    /* PLUS  */
+    MINUS = 269,                   /* MINUS  */
+    MUL = 270,                     /* MUL  */
+    DIV = 271,                     /* DIV  */
+    CEQ = 272,                     /* CEQ  */
+    CNE = 273,                     /* CNE  */
+    CLT = 274,                     /* CLT  */
+    CLE = 275,                     /* CLE  */
+    CGT = 276,                     /* CGT  */
+    CGE = 277                      /* CGE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

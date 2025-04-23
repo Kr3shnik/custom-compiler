@@ -1,3 +1,4 @@
-func main(){
-	print(0);
+int main(){
+	int _ttest2;
+	_ttest2=10;
 }
