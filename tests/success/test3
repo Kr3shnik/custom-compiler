@@ -1,4 +1,4 @@
-int main(){
+void main(){
 	int _ttest2;
 	_ttest2=10;
 }

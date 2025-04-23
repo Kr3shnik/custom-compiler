@@ -69,14 +69,21 @@
 /* First part of user prologue.  */
 #line 1 "src/grammar.y"
 
-#define YYDEBUG 1
 extern int yydebug;
 #include <stdio.h>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <memory>
+#include "../include/ASTNodes.h"
+
 int yylex();
 int yyerror(const char *s);
 
+// Root of the AST
+std::unique_ptr<NProgram> programRoot;
 
-#line 80 "build/parser.tab.c"
+#line 87 "build/parser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -526,12 +533,12 @@ static const yytype_int8 yytranslate[] =
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int8 yyrline[] =
+static const yytype_uint8 yyrline[] =
 {
-       0,    23,    23,    25,    26,    28,    29,    30,    32,    33,
-      35,    36,    38,    40,    41,    42,    44,    46,    47,    49,
-      51,    52,    53,    54,    55,    56,    57,    59,    60,    61,
-      63,    63,    63,    63,    63,    63,    64,    64,    64,    64
+       0,    56,    56,    59,    61,    64,    65,    66,    69,    70,
+      73,    75,    80,    88,    89,    92,    97,   100,   101,   104,
+     108,   110,   116,   117,   118,   121,   122,   125,   126,   128,
+     132,   133,   134,   135,   136,   137,   138,   139,   140,   141
 };
 #endif
 
@@ -1400,8 +1407,259 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
+  case 2: /* program: stms  */
+#line 56 "src/grammar.y"
+                                               { programRoot = std::make_unique<NProgram>(std::unique_ptr<NBlock>((yyvsp[0].block))); }
+#line 1414 "build/parser.tab.c"
+    break;
 
-#line 1405 "build/parser.tab.c"
+  case 3: /* stms: stmt  */
+#line 59 "src/grammar.y"
+                                              { (yyval.block) = new NBlock(); 
+                                               static_cast<NBlock*>((yyval.block))->addStatement(std::unique_ptr<NStatement>((yyvsp[0].stmt))); }
+#line 1421 "build/parser.tab.c"
+    break;
+
+  case 4: /* stms: stms stmt  */
+#line 61 "src/grammar.y"
+                                              { (yyvsp[-1].block)->addStatement(std::unique_ptr<NStatement>((yyvsp[0].stmt))); (yyval.block) = (yyvsp[-1].block); }
+#line 1427 "build/parser.tab.c"
+    break;
+
+  case 5: /* stmt: var_decl SEMICOLON  */
+#line 64 "src/grammar.y"
+                                              { (yyval.stmt) = (yyvsp[-1].stmt); }
+#line 1433 "build/parser.tab.c"
+    break;
+
+  case 6: /* stmt: func_decl  */
+#line 65 "src/grammar.y"
+                                               { (yyval.stmt) = (yyvsp[0].stmt); }
+#line 1439 "build/parser.tab.c"
+    break;
+
+  case 7: /* stmt: expr SEMICOLON  */
+#line 66 "src/grammar.y"
+                                              { (yyval.stmt) = new NExpressionStatement(std::unique_ptr<NExpression>((yyvsp[-1].expr))); }
+#line 1445 "build/parser.tab.c"
+    break;
+
+  case 8: /* block: LCUR stms RCUR  */
+#line 69 "src/grammar.y"
+                                              { (yyval.block) = (yyvsp[-1].block); }
+#line 1451 "build/parser.tab.c"
+    break;
+
+  case 9: /* block: LCUR RCUR  */
+#line 70 "src/grammar.y"
+                                               { (yyval.block) = new NBlock(); }
+#line 1457 "build/parser.tab.c"
+    break;
+
+  case 10: /* var_decl: ident ident  */
+#line 73 "src/grammar.y"
+                                              { (yyval.stmt) = new NVariableDeclaration(std::unique_ptr<NIdentifier>((yyvsp[-1].ident)), 
+                                                                           std::unique_ptr<NIdentifier>((yyvsp[0].ident))); }
+#line 1464 "build/parser.tab.c"
+    break;
+
+  case 11: /* var_decl: ident ident EQUAL expr  */
+#line 75 "src/grammar.y"
+                                               { (yyval.stmt) = new NVariableDeclaration(std::unique_ptr<NIdentifier>((yyvsp[-3].ident)), 
+                                                                           std::unique_ptr<NIdentifier>((yyvsp[-2].ident)), 
+                                                                           std::unique_ptr<NExpression>((yyvsp[0].expr))); }
+#line 1472 "build/parser.tab.c"
+    break;
+
+  case 12: /* func_decl: ident ident LPAR func_param RPAR block  */
+#line 81 "src/grammar.y"
+                                               { (yyval.stmt) = new NFunctionDeclaration(std::unique_ptr<NIdentifier>((yyvsp[-5].ident)),
+                                                                           std::unique_ptr<NIdentifier>((yyvsp[-4].ident)),
+                                                                           std::move(*(yyvsp[-2].var_decls)),
+                                                                           std::unique_ptr<NBlock>((yyvsp[0].block)));
+                                                 delete (yyvsp[-2].var_decls); }
+#line 1482 "build/parser.tab.c"
+    break;
+
+  case 13: /* func_param: %empty  */
+#line 88 "src/grammar.y"
+                                              { (yyval.var_decls) = new std::vector<std::unique_ptr<NVariableDeclaration>>(); }
+#line 1488 "build/parser.tab.c"
+    break;
+
+  case 14: /* func_param: var_decl  */
+#line 89 "src/grammar.y"
+                                               { (yyval.var_decls) = new std::vector<std::unique_ptr<NVariableDeclaration>>();
+                                               (yyval.var_decls)->push_back(std::unique_ptr<NVariableDeclaration>(
+                                                   static_cast<NVariableDeclaration*>((yyvsp[0].stmt)))); }
+#line 1496 "build/parser.tab.c"
+    break;
+
+  case 15: /* func_param: func_param COMMA var_decl  */
+#line 92 "src/grammar.y"
+                                               { (yyvsp[-2].var_decls)->push_back(std::unique_ptr<NVariableDeclaration>(
+                                                   static_cast<NVariableDeclaration*>((yyvsp[0].stmt))));
+                                               (yyval.var_decls) = (yyvsp[-2].var_decls); }
+#line 1504 "build/parser.tab.c"
+    break;
+
+  case 16: /* ident: IDENT  */
+#line 97 "src/grammar.y"
+                                              { (yyval.ident) = new NIdentifier(*(yyvsp[0].stringVal)); delete (yyvsp[0].stringVal); }
+#line 1510 "build/parser.tab.c"
+    break;
+
+  case 17: /* numeric: NUMBER  */
+#line 100 "src/grammar.y"
+                                              { (yyval.expr) = new NNumeric((yyvsp[0].intVal)); }
+#line 1516 "build/parser.tab.c"
+    break;
+
+  case 18: /* numeric: FLOAT  */
+#line 101 "src/grammar.y"
+                                               { (yyval.expr) = new NNumeric((yyvsp[0].floatVal)); }
+#line 1522 "build/parser.tab.c"
+    break;
+
+  case 19: /* assign: ident EQUAL expr  */
+#line 104 "src/grammar.y"
+                                              { (yyval.expr) = new NAssignment(std::unique_ptr<NIdentifier>((yyvsp[-2].ident)), 
+                                                                  std::unique_ptr<NExpression>((yyvsp[0].expr))); }
+#line 1529 "build/parser.tab.c"
+    break;
+
+  case 20: /* expr: ident EQUAL expr  */
+#line 108 "src/grammar.y"
+                                              { (yyval.expr) = new NAssignment(std::unique_ptr<NIdentifier>((yyvsp[-2].ident)), 
+                                                                  std::unique_ptr<NExpression>((yyvsp[0].expr))); }
+#line 1536 "build/parser.tab.c"
+    break;
+
+  case 21: /* expr: ident LPAR call_args RPAR  */
+#line 110 "src/grammar.y"
+                                               { NFunctionCall* call = new NFunctionCall(std::unique_ptr<NIdentifier>((yyvsp[-3].ident)));
+                                               for (auto& expr : *(yyvsp[-1].exprs)) {
+                                                   call->arguments.push_back(std::move(expr));
+                                               }
+                                               delete (yyvsp[-1].exprs);
+                                               (yyval.expr) = call; }
+#line 1547 "build/parser.tab.c"
+    break;
+
+  case 22: /* expr: ident  */
+#line 116 "src/grammar.y"
+                                               { (yyval.expr) = (yyvsp[0].ident); }
+#line 1553 "build/parser.tab.c"
+    break;
+
+  case 23: /* expr: numeric  */
+#line 117 "src/grammar.y"
+                                               { (yyval.expr) = (yyvsp[0].expr); }
+#line 1559 "build/parser.tab.c"
+    break;
+
+  case 24: /* expr: expr comparison expr  */
+#line 118 "src/grammar.y"
+                                               { (yyval.expr) = new NBinaryOperator(std::unique_ptr<NExpression>((yyvsp[-2].expr)), 
+                                                                      (yyvsp[-1].intVal), 
+                                                                      std::unique_ptr<NExpression>((yyvsp[0].expr))); }
+#line 1567 "build/parser.tab.c"
+    break;
+
+  case 25: /* expr: LPAR expr RPAR  */
+#line 121 "src/grammar.y"
+                                               { (yyval.expr) = (yyvsp[-1].expr); }
+#line 1573 "build/parser.tab.c"
+    break;
+
+  case 26: /* expr: assign  */
+#line 122 "src/grammar.y"
+                                               { (yyval.expr) = (yyvsp[0].expr); }
+#line 1579 "build/parser.tab.c"
+    break;
+
+  case 27: /* call_args: %empty  */
+#line 125 "src/grammar.y"
+                                              { (yyval.exprs) = new std::vector<std::unique_ptr<NExpression>>(); }
+#line 1585 "build/parser.tab.c"
+    break;
+
+  case 28: /* call_args: expr  */
+#line 126 "src/grammar.y"
+                                               { (yyval.exprs) = new std::vector<std::unique_ptr<NExpression>>();
+                                               (yyval.exprs)->push_back(std::unique_ptr<NExpression>((yyvsp[0].expr))); }
+#line 1592 "build/parser.tab.c"
+    break;
+
+  case 29: /* call_args: call_args COMMA expr  */
+#line 128 "src/grammar.y"
+                                               { (yyvsp[-2].exprs)->push_back(std::unique_ptr<NExpression>((yyvsp[0].expr)));
+                                               (yyval.exprs) = (yyvsp[-2].exprs); }
+#line 1599 "build/parser.tab.c"
+    break;
+
+  case 30: /* comparison: CEQ  */
+#line 132 "src/grammar.y"
+                                              { (yyval.intVal) = CEQ; }
+#line 1605 "build/parser.tab.c"
+    break;
+
+  case 31: /* comparison: CNE  */
+#line 133 "src/grammar.y"
+                                               { (yyval.intVal) = CNE; }
+#line 1611 "build/parser.tab.c"
+    break;
+
+  case 32: /* comparison: CLT  */
+#line 134 "src/grammar.y"
+                                               { (yyval.intVal) = CLT; }
+#line 1617 "build/parser.tab.c"
+    break;
+
+  case 33: /* comparison: CLE  */
+#line 135 "src/grammar.y"
+                                               { (yyval.intVal) = CLE; }
+#line 1623 "build/parser.tab.c"
+    break;
+
+  case 34: /* comparison: CGT  */
+#line 136 "src/grammar.y"
+                                               { (yyval.intVal) = CGT; }
+#line 1629 "build/parser.tab.c"
+    break;
+
+  case 35: /* comparison: CGE  */
+#line 137 "src/grammar.y"
+                                               { (yyval.intVal) = CGE; }
+#line 1635 "build/parser.tab.c"
+    break;
+
+  case 36: /* comparison: PLUS  */
+#line 138 "src/grammar.y"
+                                               { (yyval.intVal) = PLUS; }
+#line 1641 "build/parser.tab.c"
+    break;
+
+  case 37: /* comparison: MINUS  */
+#line 139 "src/grammar.y"
+                                               { (yyval.intVal) = MINUS; }
+#line 1647 "build/parser.tab.c"
+    break;
+
+  case 38: /* comparison: MUL  */
+#line 140 "src/grammar.y"
+                                               { (yyval.intVal) = MUL; }
+#line 1653 "build/parser.tab.c"
+    break;
+
+  case 39: /* comparison: DIV  */
+#line 141 "src/grammar.y"
+                                               { (yyval.intVal) = DIV; }
+#line 1659 "build/parser.tab.c"
+    break;
+
+
+#line 1663 "build/parser.tab.c"
 
       default: break;
     }
@@ -1625,14 +1883,17 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 68 "src/grammar.y"
+#line 144 "src/grammar.y"
 
 
 int main(void){
-    yydebug = 1;
     int result = yyparse();
     if (result == 0) {
         // Successfully parsed
+        std::cout << "Parsing successful! Dumping AST:" << std::endl;
+        if (programRoot) {
+            programRoot->print();
+        }
         return 0;
     } else {
         // Parsing error occurred

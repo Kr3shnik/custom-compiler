@@ -80,7 +80,28 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 19 "src/grammar.y"
+
+    std::string* stringVal;
+    int intVal;
+    float floatVal;
+    Node* node;
+    NStatement* stmt;
+    NExpression* expr;
+    NBlock* block;
+    NIdentifier* ident;
+    NVariableDeclaration* var_decl;
+    NFunctionDeclaration* func_decl;
+    std::vector<std::unique_ptr<NStatement>>* stmts;
+    std::vector<std::unique_ptr<NExpression>>* exprs;
+    std::vector<std::unique_ptr<NVariableDeclaration>>* var_decls;
+
+#line 102 "build/parser.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

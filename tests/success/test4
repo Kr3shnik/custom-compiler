@@ -1,4 +1,4 @@
-func main(){
+void main(){
 	print(0);
 	print(a);
 	print(v);

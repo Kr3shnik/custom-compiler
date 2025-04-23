@@ -461,10 +461,17 @@ char *yytext;
 #line 2 "src/lexer.lex"
 
 #include <stdio.h>
+#include <string>
+#include "../include/ASTNodes.h"
 #include "parser.tab.h"
 
-#line 467 "build/lex.yy.c"
-#line 468 "build/lex.yy.c"
+// Utility function to create string values
+std::string* createString(const char* text) {
+    return new std::string(text);
+}
+
+#line 474 "build/lex.yy.c"
+#line 475 "build/lex.yy.c"
 
 #define INITIAL 0
 
@@ -681,9 +688,9 @@ YY_DECL
 		}
 
 	{
-#line 8 "src/lexer.lex"
+#line 15 "src/lexer.lex"
 
-#line 687 "build/lex.yy.c"
+#line 694 "build/lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -742,121 +749,121 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 9 "src/lexer.lex"
-{return IDENT;}
+#line 16 "src/lexer.lex"
+{ yylval.stringVal = createString(yytext); return IDENT; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 10 "src/lexer.lex"
-{return FLOAT;}
+#line 17 "src/lexer.lex"
+{ yylval.floatVal = atof(yytext); return FLOAT; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 11 "src/lexer.lex"
-{return NUMBER;}
+#line 18 "src/lexer.lex"
+{ yylval.intVal = atoi(yytext); return NUMBER; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 12 "src/lexer.lex"
-{return LPAR;}
+#line 19 "src/lexer.lex"
+{ return LPAR; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 13 "src/lexer.lex"
-{return RPAR;}
+#line 20 "src/lexer.lex"
+{ return RPAR; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 14 "src/lexer.lex"
-{return LCUR;}
+#line 21 "src/lexer.lex"
+{ return LCUR; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 15 "src/lexer.lex"
-{return RCUR;}
+#line 22 "src/lexer.lex"
+{ return RCUR; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 16 "src/lexer.lex"
-{return COMMA;}
+#line 23 "src/lexer.lex"
+{ return COMMA; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 17 "src/lexer.lex"
-{return EQUAL;}
+#line 24 "src/lexer.lex"
+{ return EQUAL; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 18 "src/lexer.lex"
-{return CEQ;}
+#line 25 "src/lexer.lex"
+{ return CEQ; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 19 "src/lexer.lex"
-{return CNE;}
+#line 26 "src/lexer.lex"
+{ return CNE; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 20 "src/lexer.lex"
-{return CLT;}
+#line 27 "src/lexer.lex"
+{ return CLT; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 21 "src/lexer.lex"
-{return CLE;}
+#line 28 "src/lexer.lex"
+{ return CLE; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 22 "src/lexer.lex"
-{return CGT;}
+#line 29 "src/lexer.lex"
+{ return CGT; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 23 "src/lexer.lex"
-{return CGE;}
+#line 30 "src/lexer.lex"
+{ return CGE; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 24 "src/lexer.lex"
-{return PLUS;}
+#line 31 "src/lexer.lex"
+{ return PLUS; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 25 "src/lexer.lex"
-{return MINUS;}
+#line 32 "src/lexer.lex"
+{ return MINUS; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 26 "src/lexer.lex"
-{return MUL;}
+#line 33 "src/lexer.lex"
+{ return MUL; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 27 "src/lexer.lex"
-{return DIV;}
+#line 34 "src/lexer.lex"
+{ return DIV; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 28 "src/lexer.lex"
-{return SEMICOLON;}
+#line 35 "src/lexer.lex"
+{ return SEMICOLON; }
 	YY_BREAK
 case 21:
 /* rule 21 can match eol */
 YY_RULE_SETUP
-#line 30 "src/lexer.lex"
+#line 37 "src/lexer.lex"
 {}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 31 "src/lexer.lex"
-{printf("Unknown token:%s\n", yytext); yyterminate();}
+#line 38 "src/lexer.lex"
+{ printf("Unknown token:%s\n", yytext); yyterminate(); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 32 "src/lexer.lex"
+#line 39 "src/lexer.lex"
 ECHO;
 	YY_BREAK
-#line 860 "build/lex.yy.c"
+#line 867 "build/lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1861,7 +1868,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 32 "src/lexer.lex"
+#line 39 "src/lexer.lex"
 
 
 int yywrap() { return 1; }
