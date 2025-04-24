@@ -144,10 +144,9 @@ enum yysymbol_kind_t
   YYSYMBOL_func_param = 30,                /* func_param  */
   YYSYMBOL_ident = 31,                     /* ident  */
   YYSYMBOL_numeric = 32,                   /* numeric  */
-  YYSYMBOL_assign = 33,                    /* assign  */
-  YYSYMBOL_expr = 34,                      /* expr  */
-  YYSYMBOL_call_args = 35,                 /* call_args  */
-  YYSYMBOL_comparison = 36                 /* comparison  */
+  YYSYMBOL_expr = 33,                      /* expr  */
+  YYSYMBOL_call_args = 34,                 /* call_args  */
+  YYSYMBOL_comparison = 35                 /* comparison  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -473,18 +472,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  16
+#define YYFINAL  15
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   89
+#define YYLAST   86
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  23
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  14
+#define YYNNTS  13
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  39
+#define YYNRULES  37
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  57
+#define YYNSTATES  56
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   277
@@ -535,10 +534,10 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    56,    56,    59,    61,    64,    65,    66,    69,    70,
-      73,    75,    80,    88,    89,    92,    97,   100,   101,   104,
-     108,   110,   116,   117,   118,   121,   122,   125,   126,   128,
-     132,   133,   134,   135,   136,   137,   138,   139,   140,   141
+       0,    56,    56,    58,    62,    64,    65,    66,    68,    69,
+      71,    74,    79,    88,    89,    92,    98,   100,   101,   103,
+     105,   111,   114,   115,   116,   118,   119,   122,   126,   127,
+     128,   129,   130,   131,   132,   133,   134,   135
 };
 #endif
 
@@ -558,8 +557,7 @@ static const char *const yytname[] =
   "FLOAT", "RPAR", "LPAR", "RCUR", "LCUR", "EQUAL", "COMMA", "SEMICOLON",
   "PLUS", "MINUS", "MUL", "DIV", "CEQ", "CNE", "CLT", "CLE", "CGT", "CGE",
   "$accept", "program", "stms", "stmt", "block", "var_decl", "func_decl",
-  "func_param", "ident", "numeric", "assign", "expr", "call_args",
-  "comparison", YY_NULLPTR
+  "func_param", "ident", "numeric", "expr", "call_args", "comparison", YY_NULLPTR
 };
 
 static const char *
@@ -569,7 +567,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-37)
+#define YYPACT_NINF (-35)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -583,12 +581,12 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      80,   -37,   -37,   -37,    80,     5,    80,   -37,    -3,   -37,
-       1,   -37,   -37,    44,    26,     6,   -37,   -37,   -37,    80,
-      80,    79,   -37,   -37,   -37,   -37,   -37,   -37,   -37,   -37,
-     -37,   -37,   -37,    80,   -37,    54,    23,    54,     4,    80,
-      54,   -37,    80,   -37,    24,     4,    54,    54,     7,     4,
-       3,    39,   -37,   -37,   -37,    74,   -37
+      79,   -35,   -35,   -35,    79,     8,    79,   -35,     1,   -35,
+       2,   -35,    43,    -3,     5,   -35,   -35,   -35,    79,    79,
+      25,   -35,   -35,   -35,   -35,   -35,   -35,   -35,   -35,   -35,
+     -35,   -35,    79,   -35,    53,    22,    53,    12,    79,    53,
+     -35,    79,   -35,    23,    12,    53,    53,    29,    12,    21,
+      38,   -35,   -35,   -35,    73,   -35
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -597,25 +595,25 @@ static const yytype_int8 yypact[] =
 static const yytype_int8 yydefact[] =
 {
        0,    16,    17,    18,     0,     0,     2,     3,     0,     6,
-      22,    23,    26,     0,    22,     0,     1,     4,     5,    27,
-       0,    10,     7,    36,    37,    38,    39,    30,    31,    32,
-      33,    34,    35,     0,    25,    28,     0,    19,    13,     0,
-      24,    21,     0,    14,     0,     0,    11,    29,     0,     0,
-      10,     0,    12,    15,     9,     0,     8
+      22,    23,     0,    22,     0,     1,     4,     5,    25,     0,
+      10,     7,    34,    35,    36,    37,    28,    29,    30,    31,
+      32,    33,     0,    24,    26,     0,    19,    13,     0,    21,
+      20,     0,    14,     0,     0,    11,    27,     0,     0,    10,
+       0,    12,    15,     9,     0,     8
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -37,   -37,   -36,    -5,   -37,   -35,   -37,   -37,     0,   -37,
-     -37,    -2,   -37,   -37
+     -35,   -35,   -10,    -5,   -35,   -34,   -35,   -35,     0,   -35,
+      -2,   -35,   -35
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     5,     6,     7,    52,     8,     9,    44,    14,    11,
-      12,    13,    36,    33
+       0,     5,     6,     7,    51,     8,     9,    43,    13,    11,
+      12,    35,    32
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -623,28 +621,28 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      10,    17,    15,    43,     1,    16,    10,     1,    19,    18,
-      21,    20,    34,    39,    53,    55,    51,    35,    37,    23,
-      24,    25,    26,    27,    28,    29,    30,    31,    32,    41,
-      48,    40,     0,    19,    42,    49,    20,    46,    45,     0,
-      47,     0,     1,     2,     3,    50,     4,    54,     0,    45,
-      17,    10,     0,     0,     0,    10,    22,    23,    24,    25,
-      26,    27,    28,    29,    30,    31,    32,    23,    24,    25,
-      26,    27,    28,    29,    30,    31,    32,     1,     2,     3,
-       0,     4,    56,     1,     2,     3,    38,     4,     0,    39
+      10,    16,    14,    42,    18,     1,    10,    19,    15,    18,
+      20,    33,    19,    17,    52,     1,    34,    36,    22,    23,
+      24,    25,    26,    27,    28,    29,    30,    31,    40,    47,
+      39,    38,    37,    41,    48,    38,    45,    44,    50,    46,
+      54,     1,     2,     3,    49,     4,    53,     0,    44,    16,
+      10,     0,     0,     0,    10,    21,    22,    23,    24,    25,
+      26,    27,    28,    29,    30,    31,    22,    23,    24,    25,
+      26,    27,    28,    29,    30,    31,     1,     2,     3,     0,
+       4,    55,     1,     2,     3,     0,     4
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,     6,     4,    38,     3,     0,     6,     3,     7,    12,
-      10,    10,     6,    10,    49,    51,     9,    19,    20,    13,
-      14,    15,    16,    17,    18,    19,    20,    21,    22,     6,
-       6,    33,    -1,     7,    11,    11,    10,    39,    38,    -1,
-      42,    -1,     3,     4,     5,    45,     7,     8,    -1,    49,
-      55,    51,    -1,    -1,    -1,    55,    12,    13,    14,    15,
-      16,    17,    18,    19,    20,    21,    22,    13,    14,    15,
-      16,    17,    18,    19,    20,    21,    22,     3,     4,     5,
-      -1,     7,     8,     3,     4,     5,     7,     7,    -1,    10
+       0,     6,     4,    37,     7,     3,     6,    10,     0,     7,
+      10,     6,    10,    12,    48,     3,    18,    19,    13,    14,
+      15,    16,    17,    18,    19,    20,    21,    22,     6,     6,
+      32,    10,     7,    11,    11,    10,    38,    37,     9,    41,
+      50,     3,     4,     5,    44,     7,     8,    -1,    48,    54,
+      50,    -1,    -1,    -1,    54,    12,    13,    14,    15,    16,
+      17,    18,    19,    20,    21,    22,    13,    14,    15,    16,
+      17,    18,    19,    20,    21,    22,     3,     4,     5,    -1,
+       7,     8,     3,     4,     5,    -1,     7
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -652,11 +650,11 @@ static const yytype_int8 yycheck[] =
 static const yytype_int8 yystos[] =
 {
        0,     3,     4,     5,     7,    24,    25,    26,    28,    29,
-      31,    32,    33,    34,    31,    34,     0,    26,    12,     7,
-      10,    31,    12,    13,    14,    15,    16,    17,    18,    19,
-      20,    21,    22,    36,     6,    34,    35,    34,     7,    10,
-      34,     6,    11,    28,    30,    31,    34,    34,     6,    11,
-      31,     9,    27,    28,     8,    25,     8
+      31,    32,    33,    31,    33,     0,    26,    12,     7,    10,
+      31,    12,    13,    14,    15,    16,    17,    18,    19,    20,
+      21,    22,    35,     6,    33,    34,    33,     7,    10,    33,
+       6,    11,    28,    30,    31,    33,    33,     6,    11,    31,
+       9,    27,    28,     8,    25,     8
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
@@ -664,8 +662,8 @@ static const yytype_int8 yyr1[] =
 {
        0,    23,    24,    25,    25,    26,    26,    26,    27,    27,
       28,    28,    29,    30,    30,    30,    31,    32,    32,    33,
-      34,    34,    34,    34,    34,    34,    34,    35,    35,    35,
-      36,    36,    36,    36,    36,    36,    36,    36,    36,    36
+      33,    33,    33,    33,    33,    34,    34,    34,    35,    35,
+      35,    35,    35,    35,    35,    35,    35,    35
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -673,8 +671,8 @@ static const yytype_int8 yyr2[] =
 {
        0,     2,     1,     1,     2,     2,     1,     2,     3,     2,
        2,     4,     6,     0,     1,     3,     1,     1,     1,     3,
-       3,     4,     1,     1,     3,     3,     1,     0,     1,     3,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     1
+       4,     3,     1,     1,     3,     0,     1,     3,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1
 };
 
 
@@ -1410,256 +1408,253 @@ yyreduce:
   case 2: /* program: stms  */
 #line 56 "src/grammar.y"
                                                { programRoot = std::make_unique<NProgram>(std::unique_ptr<NBlock>((yyvsp[0].block))); }
-#line 1414 "build/parser.tab.c"
+#line 1412 "build/parser.tab.c"
     break;
 
   case 3: /* stms: stmt  */
-#line 59 "src/grammar.y"
-                                              { (yyval.block) = new NBlock(); 
-                                               static_cast<NBlock*>((yyval.block))->addStatement(std::unique_ptr<NStatement>((yyvsp[0].stmt))); }
+#line 58 "src/grammar.y"
+                                                { 
+                                                    (yyval.block) = new NBlock(); 
+                                                    static_cast<NBlock*>((yyval.block))->addStatement(std::unique_ptr<NStatement>((yyvsp[0].stmt))); 
+                                                }
 #line 1421 "build/parser.tab.c"
     break;
 
   case 4: /* stms: stms stmt  */
-#line 61 "src/grammar.y"
-                                              { (yyvsp[-1].block)->addStatement(std::unique_ptr<NStatement>((yyvsp[0].stmt))); (yyval.block) = (yyvsp[-1].block); }
+#line 62 "src/grammar.y"
+                                                { (yyvsp[-1].block)->addStatement(std::unique_ptr<NStatement>((yyvsp[0].stmt))); (yyval.block) = (yyvsp[-1].block); }
 #line 1427 "build/parser.tab.c"
     break;
 
   case 5: /* stmt: var_decl SEMICOLON  */
 #line 64 "src/grammar.y"
-                                              { (yyval.stmt) = (yyvsp[-1].stmt); }
+                                                { (yyval.stmt) = (yyvsp[-1].stmt); }
 #line 1433 "build/parser.tab.c"
     break;
 
   case 6: /* stmt: func_decl  */
 #line 65 "src/grammar.y"
-                                               { (yyval.stmt) = (yyvsp[0].stmt); }
+                                                { (yyval.stmt) = (yyvsp[0].stmt); }
 #line 1439 "build/parser.tab.c"
     break;
 
   case 7: /* stmt: expr SEMICOLON  */
 #line 66 "src/grammar.y"
-                                              { (yyval.stmt) = new NExpressionStatement(std::unique_ptr<NExpression>((yyvsp[-1].expr))); }
+                                                { (yyval.stmt) = new NExpressionStatement(std::unique_ptr<NExpression>((yyvsp[-1].expr))); }
 #line 1445 "build/parser.tab.c"
     break;
 
   case 8: /* block: LCUR stms RCUR  */
-#line 69 "src/grammar.y"
-                                              { (yyval.block) = (yyvsp[-1].block); }
+#line 68 "src/grammar.y"
+                                                { (yyval.block) = (yyvsp[-1].block); }
 #line 1451 "build/parser.tab.c"
     break;
 
   case 9: /* block: LCUR RCUR  */
-#line 70 "src/grammar.y"
-                                               { (yyval.block) = new NBlock(); }
+#line 69 "src/grammar.y"
+                                                { (yyval.block) = new NBlock(); }
 #line 1457 "build/parser.tab.c"
     break;
 
   case 10: /* var_decl: ident ident  */
-#line 73 "src/grammar.y"
-                                              { (yyval.stmt) = new NVariableDeclaration(std::unique_ptr<NIdentifier>((yyvsp[-1].ident)), 
-                                                                           std::unique_ptr<NIdentifier>((yyvsp[0].ident))); }
-#line 1464 "build/parser.tab.c"
+#line 71 "src/grammar.y"
+                                                {   (yyval.stmt) = new NVariableDeclaration(  std::unique_ptr<NIdentifier>((yyvsp[-1].ident)), 
+                                                                                    std::unique_ptr<NIdentifier>((yyvsp[0].ident)));
+                                                }
+#line 1465 "build/parser.tab.c"
     break;
 
   case 11: /* var_decl: ident ident EQUAL expr  */
-#line 75 "src/grammar.y"
-                                               { (yyval.stmt) = new NVariableDeclaration(std::unique_ptr<NIdentifier>((yyvsp[-3].ident)), 
-                                                                           std::unique_ptr<NIdentifier>((yyvsp[-2].ident)), 
-                                                                           std::unique_ptr<NExpression>((yyvsp[0].expr))); }
-#line 1472 "build/parser.tab.c"
+#line 74 "src/grammar.y"
+                                               {    (yyval.stmt) = new NVariableDeclaration(  std::unique_ptr<NIdentifier>((yyvsp[-3].ident)), 
+                                                                                    std::unique_ptr<NIdentifier>((yyvsp[-2].ident)), 
+                                                                                    std::unique_ptr<NExpression>((yyvsp[0].expr))); 
+                                                }
+#line 1474 "build/parser.tab.c"
     break;
 
   case 12: /* func_decl: ident ident LPAR func_param RPAR block  */
-#line 81 "src/grammar.y"
-                                               { (yyval.stmt) = new NFunctionDeclaration(std::unique_ptr<NIdentifier>((yyvsp[-5].ident)),
-                                                                           std::unique_ptr<NIdentifier>((yyvsp[-4].ident)),
-                                                                           std::move(*(yyvsp[-2].var_decls)),
-                                                                           std::unique_ptr<NBlock>((yyvsp[0].block)));
-                                                 delete (yyvsp[-2].var_decls); }
-#line 1482 "build/parser.tab.c"
+#line 80 "src/grammar.y"
+                                                {   
+                                                    (yyval.stmt) = new NFunctionDeclaration( std::unique_ptr<NIdentifier>((yyvsp[-5].ident)),
+                                                                                std::unique_ptr<NIdentifier>((yyvsp[-4].ident)),
+                                                                                std::move(*(yyvsp[-2].var_decls)),
+                                                                                std::unique_ptr<NBlock>((yyvsp[0].block)));
+                                                    delete (yyvsp[-2].var_decls); 
+                                                }
+#line 1486 "build/parser.tab.c"
     break;
 
   case 13: /* func_param: %empty  */
 #line 88 "src/grammar.y"
-                                              { (yyval.var_decls) = new std::vector<std::unique_ptr<NVariableDeclaration>>(); }
-#line 1488 "build/parser.tab.c"
+                                                {   (yyval.var_decls) = new std::vector<std::unique_ptr<NVariableDeclaration>>(); }
+#line 1492 "build/parser.tab.c"
     break;
 
   case 14: /* func_param: var_decl  */
 #line 89 "src/grammar.y"
-                                               { (yyval.var_decls) = new std::vector<std::unique_ptr<NVariableDeclaration>>();
-                                               (yyval.var_decls)->push_back(std::unique_ptr<NVariableDeclaration>(
-                                                   static_cast<NVariableDeclaration*>((yyvsp[0].stmt)))); }
-#line 1496 "build/parser.tab.c"
+                                                {   (yyval.var_decls) = new std::vector<std::unique_ptr<NVariableDeclaration>>();
+                                                    (yyval.var_decls)->push_back(std::unique_ptr<NVariableDeclaration>(static_cast<NVariableDeclaration*>((yyvsp[0].stmt)))); 
+                                                }
+#line 1500 "build/parser.tab.c"
     break;
 
   case 15: /* func_param: func_param COMMA var_decl  */
 #line 92 "src/grammar.y"
-                                               { (yyvsp[-2].var_decls)->push_back(std::unique_ptr<NVariableDeclaration>(
-                                                   static_cast<NVariableDeclaration*>((yyvsp[0].stmt))));
-                                               (yyval.var_decls) = (yyvsp[-2].var_decls); }
-#line 1504 "build/parser.tab.c"
+                                                {   
+                                                    (yyvsp[-2].var_decls)->push_back(std::unique_ptr<NVariableDeclaration>(
+                                                    static_cast<NVariableDeclaration*>((yyvsp[0].stmt))));
+                                                    (yyval.var_decls) = (yyvsp[-2].var_decls); 
+                                                }
+#line 1510 "build/parser.tab.c"
     break;
 
   case 16: /* ident: IDENT  */
-#line 97 "src/grammar.y"
+#line 98 "src/grammar.y"
                                               { (yyval.ident) = new NIdentifier(*(yyvsp[0].stringVal)); delete (yyvsp[0].stringVal); }
-#line 1510 "build/parser.tab.c"
+#line 1516 "build/parser.tab.c"
     break;
 
   case 17: /* numeric: NUMBER  */
 #line 100 "src/grammar.y"
                                               { (yyval.expr) = new NNumeric((yyvsp[0].intVal)); }
-#line 1516 "build/parser.tab.c"
+#line 1522 "build/parser.tab.c"
     break;
 
   case 18: /* numeric: FLOAT  */
 #line 101 "src/grammar.y"
                                                { (yyval.expr) = new NNumeric((yyvsp[0].floatVal)); }
-#line 1522 "build/parser.tab.c"
+#line 1528 "build/parser.tab.c"
     break;
 
-  case 19: /* assign: ident EQUAL expr  */
-#line 104 "src/grammar.y"
-                                              { (yyval.expr) = new NAssignment(std::unique_ptr<NIdentifier>((yyvsp[-2].ident)), 
+  case 19: /* expr: ident EQUAL expr  */
+#line 103 "src/grammar.y"
+                                               { (yyval.expr) = new NAssignment(std::unique_ptr<NIdentifier>((yyvsp[-2].ident)), 
                                                                   std::unique_ptr<NExpression>((yyvsp[0].expr))); }
-#line 1529 "build/parser.tab.c"
+#line 1535 "build/parser.tab.c"
     break;
 
-  case 20: /* expr: ident EQUAL expr  */
-#line 108 "src/grammar.y"
-                                              { (yyval.expr) = new NAssignment(std::unique_ptr<NIdentifier>((yyvsp[-2].ident)), 
-                                                                  std::unique_ptr<NExpression>((yyvsp[0].expr))); }
-#line 1536 "build/parser.tab.c"
-    break;
-
-  case 21: /* expr: ident LPAR call_args RPAR  */
-#line 110 "src/grammar.y"
+  case 20: /* expr: ident LPAR call_args RPAR  */
+#line 105 "src/grammar.y"
                                                { NFunctionCall* call = new NFunctionCall(std::unique_ptr<NIdentifier>((yyvsp[-3].ident)));
                                                for (auto& expr : *(yyvsp[-1].exprs)) {
                                                    call->arguments.push_back(std::move(expr));
                                                }
                                                delete (yyvsp[-1].exprs);
                                                (yyval.expr) = call; }
-#line 1547 "build/parser.tab.c"
+#line 1546 "build/parser.tab.c"
+    break;
+
+  case 21: /* expr: expr comparison expr  */
+#line 111 "src/grammar.y"
+                                               { (yyval.expr) = new NBinaryOperator(  std::unique_ptr<NExpression>((yyvsp[-2].expr)), 
+                                                                            (yyvsp[-1].intVal), 
+                                                                        std::unique_ptr<NExpression>((yyvsp[0].expr))); }
+#line 1554 "build/parser.tab.c"
     break;
 
   case 22: /* expr: ident  */
-#line 116 "src/grammar.y"
+#line 114 "src/grammar.y"
                                                { (yyval.expr) = (yyvsp[0].ident); }
-#line 1553 "build/parser.tab.c"
+#line 1560 "build/parser.tab.c"
     break;
 
   case 23: /* expr: numeric  */
-#line 117 "src/grammar.y"
+#line 115 "src/grammar.y"
                                                { (yyval.expr) = (yyvsp[0].expr); }
-#line 1559 "build/parser.tab.c"
+#line 1566 "build/parser.tab.c"
     break;
 
-  case 24: /* expr: expr comparison expr  */
-#line 118 "src/grammar.y"
-                                               { (yyval.expr) = new NBinaryOperator(std::unique_ptr<NExpression>((yyvsp[-2].expr)), 
-                                                                      (yyvsp[-1].intVal), 
-                                                                      std::unique_ptr<NExpression>((yyvsp[0].expr))); }
-#line 1567 "build/parser.tab.c"
-    break;
-
-  case 25: /* expr: LPAR expr RPAR  */
-#line 121 "src/grammar.y"
+  case 24: /* expr: LPAR expr RPAR  */
+#line 116 "src/grammar.y"
                                                { (yyval.expr) = (yyvsp[-1].expr); }
-#line 1573 "build/parser.tab.c"
+#line 1572 "build/parser.tab.c"
     break;
 
-  case 26: /* expr: assign  */
+  case 25: /* call_args: %empty  */
+#line 118 "src/grammar.y"
+                                                {   (yyval.exprs) = new std::vector<std::unique_ptr<NExpression>>(); }
+#line 1578 "build/parser.tab.c"
+    break;
+
+  case 26: /* call_args: expr  */
+#line 119 "src/grammar.y"
+                                                {   (yyval.exprs) = new std::vector<std::unique_ptr<NExpression>>();
+                                                    (yyval.exprs)->push_back(std::unique_ptr<NExpression>((yyvsp[0].expr)));
+                                                }
+#line 1586 "build/parser.tab.c"
+    break;
+
+  case 27: /* call_args: call_args COMMA expr  */
 #line 122 "src/grammar.y"
-                                               { (yyval.expr) = (yyvsp[0].expr); }
-#line 1579 "build/parser.tab.c"
+                                                {   (yyvsp[-2].exprs)->push_back(std::unique_ptr<NExpression>((yyvsp[0].expr)));
+                                                    (yyval.exprs) = (yyvsp[-2].exprs); 
+                                                }
+#line 1594 "build/parser.tab.c"
     break;
 
-  case 27: /* call_args: %empty  */
-#line 125 "src/grammar.y"
-                                              { (yyval.exprs) = new std::vector<std::unique_ptr<NExpression>>(); }
-#line 1585 "build/parser.tab.c"
-    break;
-
-  case 28: /* call_args: expr  */
+  case 28: /* comparison: CEQ  */
 #line 126 "src/grammar.y"
-                                               { (yyval.exprs) = new std::vector<std::unique_ptr<NExpression>>();
-                                               (yyval.exprs)->push_back(std::unique_ptr<NExpression>((yyvsp[0].expr))); }
-#line 1592 "build/parser.tab.c"
+                                                { (yyval.intVal) = CEQ;  }
+#line 1600 "build/parser.tab.c"
     break;
 
-  case 29: /* call_args: call_args COMMA expr  */
+  case 29: /* comparison: CNE  */
+#line 127 "src/grammar.y"
+                                                { (yyval.intVal) = CNE;  }
+#line 1606 "build/parser.tab.c"
+    break;
+
+  case 30: /* comparison: CLT  */
 #line 128 "src/grammar.y"
-                                               { (yyvsp[-2].exprs)->push_back(std::unique_ptr<NExpression>((yyvsp[0].expr)));
-                                               (yyval.exprs) = (yyvsp[-2].exprs); }
-#line 1599 "build/parser.tab.c"
+                                                { (yyval.intVal) = CLT;  }
+#line 1612 "build/parser.tab.c"
     break;
 
-  case 30: /* comparison: CEQ  */
+  case 31: /* comparison: CLE  */
+#line 129 "src/grammar.y"
+                                                { (yyval.intVal) = CLE;  }
+#line 1618 "build/parser.tab.c"
+    break;
+
+  case 32: /* comparison: CGT  */
+#line 130 "src/grammar.y"
+                                                { (yyval.intVal) = CGT;  }
+#line 1624 "build/parser.tab.c"
+    break;
+
+  case 33: /* comparison: CGE  */
+#line 131 "src/grammar.y"
+                                                { (yyval.intVal) = CGE;  }
+#line 1630 "build/parser.tab.c"
+    break;
+
+  case 34: /* comparison: PLUS  */
 #line 132 "src/grammar.y"
-                                              { (yyval.intVal) = CEQ; }
-#line 1605 "build/parser.tab.c"
+                                                { (yyval.intVal) = PLUS; }
+#line 1636 "build/parser.tab.c"
     break;
 
-  case 31: /* comparison: CNE  */
+  case 35: /* comparison: MINUS  */
 #line 133 "src/grammar.y"
-                                               { (yyval.intVal) = CNE; }
-#line 1611 "build/parser.tab.c"
+                                                { (yyval.intVal) = MINUS;}
+#line 1642 "build/parser.tab.c"
     break;
 
-  case 32: /* comparison: CLT  */
+  case 36: /* comparison: MUL  */
 #line 134 "src/grammar.y"
-                                               { (yyval.intVal) = CLT; }
-#line 1617 "build/parser.tab.c"
+                                                { (yyval.intVal) = MUL;  }
+#line 1648 "build/parser.tab.c"
     break;
 
-  case 33: /* comparison: CLE  */
+  case 37: /* comparison: DIV  */
 #line 135 "src/grammar.y"
-                                               { (yyval.intVal) = CLE; }
-#line 1623 "build/parser.tab.c"
-    break;
-
-  case 34: /* comparison: CGT  */
-#line 136 "src/grammar.y"
-                                               { (yyval.intVal) = CGT; }
-#line 1629 "build/parser.tab.c"
-    break;
-
-  case 35: /* comparison: CGE  */
-#line 137 "src/grammar.y"
-                                               { (yyval.intVal) = CGE; }
-#line 1635 "build/parser.tab.c"
-    break;
-
-  case 36: /* comparison: PLUS  */
-#line 138 "src/grammar.y"
-                                               { (yyval.intVal) = PLUS; }
-#line 1641 "build/parser.tab.c"
-    break;
-
-  case 37: /* comparison: MINUS  */
-#line 139 "src/grammar.y"
-                                               { (yyval.intVal) = MINUS; }
-#line 1647 "build/parser.tab.c"
-    break;
-
-  case 38: /* comparison: MUL  */
-#line 140 "src/grammar.y"
-                                               { (yyval.intVal) = MUL; }
-#line 1653 "build/parser.tab.c"
-    break;
-
-  case 39: /* comparison: DIV  */
-#line 141 "src/grammar.y"
-                                               { (yyval.intVal) = DIV; }
-#line 1659 "build/parser.tab.c"
+                                                { (yyval.intVal) = DIV;  }
+#line 1654 "build/parser.tab.c"
     break;
 
 
-#line 1663 "build/parser.tab.c"
+#line 1658 "build/parser.tab.c"
 
       default: break;
     }
@@ -1883,7 +1878,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 144 "src/grammar.y"
+#line 137 "src/grammar.y"
 
 
 int main(void){
