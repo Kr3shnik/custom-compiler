@@ -1,5 +1,4 @@
 %{
-
 #include <stdio.h>
 #include <string>
 #include "../include/ASTNodes.h"
@@ -9,10 +8,10 @@
 std::string* createString(const char* text) {
     return new std::string(text);
 }
-
 %}
 
 %%
+"while"                  { return WHILE; }
 [a-zA-Z_][a-zA-Z0-9_]*  { yylval.stringVal = createString(yytext); return IDENT; }
 [0-9]+\.[0-9]*          { yylval.floatVal = atof(yytext); return FLOAT; }
 [0-9]+                  { yylval.intVal = atoi(yytext); return NUMBER; }
