@@ -42,12 +42,12 @@ static std::string opToString(int op) {
         case 269: return "-";
         case 270: return "*";
         case 271: return "/";
-        case 272: return "=="; // CEQ token
-        case 273: return "!="; // CNE token
-        case 274: return "<";  // CLT token
-        case 275: return "<="; // CLE token
-        case 276: return ">";  // CGT token
-        case 277: return ">="; // CGE token
+        case 274: return "=="; // CEQ token
+        case 275: return "!="; // CNE token
+        case 276: return "<";  // CLT token
+        case 277: return "<="; // CLE token
+        case 278: return ">";  // CGT token
+        case 279: return ">="; // CGE token
         default: return "unknown";
     }
 }
@@ -89,6 +89,7 @@ void NNumeric::print(int level) const {
 
 void NBinaryOperator::print(int level) const {
     static std::vector<bool> isLastChild(100, false);
+    std::cout << op;
     std::cout << getTreePrefix(level, true, isLastChild) << "BINARY_OP: " << opToString(op) << std::endl;
     
     isLastChild[level] = false;  // First child is not the last

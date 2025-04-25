@@ -149,6 +149,47 @@ public:
     void print(int indent = 0) const override;
 };
 
+// If statement
+class NIfStatement : public NStatement {
+public:
+    std::unique_ptr<NExpression> condition;
+    std::unique_ptr<NBlock> thenBlock;
+
+    NIfStatement(std::unique_ptr<NExpression> condition, std::unique_ptr<NBlock> thenBlock)
+        : condition(std::move(condition)), thenBlock(std::move(thenBlock)) {}
+
+    void print(int indent = 0) const override {
+        std::cout << std::string(indent, ' ') << "IF" << std::endl;
+        condition->print(indent + 2);
+        thenBlock->print(indent + 2);
+    }
+};
+
+// If-Else statement
+class NIfElseStatement : public NStatement {
+public:
+    std::unique_ptr<NExpression> condition;
+    std::unique_ptr<NBlock> thenBlock;
+    std::unique_ptr<NBlock> elseBlock;
+
+    NIfElseStatement(std::unique_ptr<NExpression> condition, 
+                     std::unique_ptr<NBlock> thenBlock, 
+                     std::unique_ptr<NBlock> elseBlock)
+        : condition(std::move(condition)), 
+          thenBlock(std::move(thenBlock)), 
+          elseBlock(std::move(elseBlock)) {}
+
+    void print(int indent = 0) const override {
+        std::cout << std::string(indent, ' ') << "IF" << std::endl;
+        condition->print(indent + 2);
+        thenBlock->print(indent + 2);
+        if (elseBlock) {
+            std::cout << std::string(indent, ' ') << "ELSE" << std::endl;
+            elseBlock->print(indent + 2);
+        }
+    }
+};
+
 // Program (root node)
 class NProgram : public Node {
 public:

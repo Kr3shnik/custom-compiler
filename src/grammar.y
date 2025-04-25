@@ -27,6 +27,7 @@ std::unique_ptr<NProgram> programRoot;
     NIdentifier* ident;
     NVariableDeclaration* var_decl;
     NFunctionDeclaration* func_decl;
+    NIfElseStatement* if_else_decl;
     std::vector<std::unique_ptr<NStatement>>* stmts;
     std::vector<std::unique_ptr<NExpression>>* exprs;
     std::vector<std::unique_ptr<NVariableDeclaration>>* var_decls;
@@ -38,15 +39,17 @@ std::unique_ptr<NProgram> programRoot;
 %token RPAR LPAR RCUR LCUR
 %token EQUAL
 %token COMMA SEMICOLON
+%token IF ELSE
 %token PLUS MINUS MUL DIV CEQ CNE CLT CLE CGT CGE
 
 %type <node> program
 %type <block> stms block
-%type <stmt> stmt var_decl func_decl
+%type <stmt> stmt var_decl func_decl if_else_decl
 %type <expr> expr numeric
 %type <ident> ident
 %type <var_decls> func_param
 %type <exprs> call_args
+
 %type <intVal> comparison
 
 %start program
@@ -64,9 +67,19 @@ stms:           stmt                            {
 stmt:           var_decl SEMICOLON              { $$ = $1; }
                 | func_decl                     { $$ = $1; }
                 | expr SEMICOLON                { $$ = new NExpressionStatement(std::unique_ptr<NExpression>($1)); }
+                | if_else_decl                       { $$ = $1; }
 
 block:          LCUR stms RCUR                  { $$ = $2; }
                 | LCUR RCUR                     { $$ = new NBlock(); }
+
+if_else_decl:   IF LPAR expr RPAR block {
+                    $$ = new NIfElseStatement(std::unique_ptr<NExpression>($3), std::unique_ptr<NBlock>($5), nullptr);
+                }
+                | IF LPAR expr RPAR block ELSE block {
+                    $$ = new NIfElseStatement(std::unique_ptr<NExpression>($3), 
+                                              std::unique_ptr<NBlock>($5), 
+                                              std::unique_ptr<NBlock>($7));
+                };
 
 var_decl:       ident ident                     {   $$ = new NVariableDeclaration(  std::unique_ptr<NIdentifier>($1), 
                                                                                     std::unique_ptr<NIdentifier>($2));
@@ -95,9 +108,9 @@ func_param:     /* blank */                     {   $$ = new std::vector<std::un
                                                     $$ = $1; 
                                                 }
 
-ident:          IDENT                         { $$ = new NIdentifier(*$1); delete $1; }
+ident:          IDENT                          { $$ = new NIdentifier(*$1); delete $1; }
 
-numeric:        NUMBER                        { $$ = new NNumeric($1); }
+numeric:        NUMBER                         { $$ = new NNumeric($1); }
                 | FLOAT                        { $$ = new NNumeric($1); }
 
 expr:            ident EQUAL expr              { $$ = new NAssignment(std::unique_ptr<NIdentifier>($1), 

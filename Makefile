@@ -1,7 +1,9 @@
 .PHONY: all build test clean
-all: build test
+all: clean build test
 
 build:
+	rm -rf build
+	mkdir build
 	flex -o build/lex.yy.c src/lexer.lex
 	bison -t -v -d -o build/parser.tab.c src/grammar.y
 	g++ -o build/parser build/lex.yy.c build/parser.tab.c src/ASTNodes.cpp -lfl -std=c++14
