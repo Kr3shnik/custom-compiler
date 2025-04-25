@@ -1,6 +1,6 @@
 int a = 0;
-float add(){
-    a = 2;
+int add(){
+    a == 1;
     a = a + 2;
 }
 int main(){

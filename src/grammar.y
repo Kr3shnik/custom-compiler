@@ -28,6 +28,7 @@ std::unique_ptr<NProgram> programRoot;
     NVariableDeclaration* var_decl;
     NFunctionDeclaration* func_decl;
     NIfElseStatement* if_else_decl;
+    NWhileStatement* while_stmt;
     std::vector<std::unique_ptr<NStatement>>* stmts;
     std::vector<std::unique_ptr<NExpression>>* exprs;
     std::vector<std::unique_ptr<NVariableDeclaration>>* var_decls;
@@ -41,10 +42,16 @@ std::unique_ptr<NProgram> programRoot;
 %token COMMA SEMICOLON
 %token IF ELSE
 %token PLUS MINUS MUL DIV CEQ CNE CLT CLE CGT CGE
+%token WHILE
 
+%right EQUAL
+%left CEQ CNE
+%left CLT CLE CGT CGE
+%left PLUS MINUS
+%left MUL DIV
 %type <node> program
 %type <block> stms block
-%type <stmt> stmt var_decl func_decl if_else_decl
+%type <stmt> stmt var_decl func_decl while_stmt if_else_decl
 %type <expr> expr numeric
 %type <ident> ident
 %type <var_decls> func_param
@@ -66,6 +73,7 @@ stms:           stmt                            {
 
 stmt:           var_decl SEMICOLON              { $$ = $1; }
                 | func_decl                     { $$ = $1; }
+| while_stmt                    { $$ = $1; }
                 | expr SEMICOLON                { $$ = new NExpressionStatement(std::unique_ptr<NExpression>($1)); }
                 | if_else_decl                       { $$ = $1; }
 
@@ -96,6 +104,11 @@ func_decl:      ident ident LPAR func_param RPAR block
                                                                                 std::move(*$4),
                                                                                 std::unique_ptr<NBlock>($6));
                                                     delete $4; 
+                                                }
+
+while_stmt:     WHILE LPAR expr RPAR block     {
+                                                    $$ = new NWhileStatement(std::unique_ptr<NExpression>($3),
+                                                                           std::unique_ptr<NBlock>($5));
                                                 }
 
 func_param:     /* blank */                     {   $$ = new std::vector<std::unique_ptr<NVariableDeclaration>>(); }
@@ -149,7 +162,7 @@ comparison:     CEQ                             { $$ = CEQ;  }
 
 %%
 
-int main(void){
+main(void){
     int result = yyparse();
     if (result == 0) {
         // Successfully parsed

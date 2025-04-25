@@ -189,6 +189,17 @@ public:
         }
     }
 };
+// While statement
+class NWhileStatement : public NStatement {
+public:
+    std::unique_ptr<NExpression> condition;
+    std::unique_ptr<NBlock> block;
+    
+    NWhileStatement(std::unique_ptr<NExpression> condition,
+                   std::unique_ptr<NBlock> block)
+        : condition(std::move(condition)), block(std::move(block)) {}
+    void print(int indent = 0) const override;
+};
 
 // Program (root node)
 class NProgram : public Node {
