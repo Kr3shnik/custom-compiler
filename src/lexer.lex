@@ -11,9 +11,11 @@ std::string* createString(const char* text) {
 %}
 
 %%
+[ \t\n\r]               {}
 "if"                    { return IF; }
 "else"                  { return ELSE; }
-"while"                  { return WHILE; }
+"while"                 { return WHILE; }
+"return"                { return RETURN; }
 [a-zA-Z_][a-zA-Z0-9_]*  { yylval.stringVal = createString(yytext); return IDENT; }
 [0-9]+\.[0-9]*          { yylval.floatVal = atof(yytext); return FLOAT; }
 [0-9]+                  { yylval.intVal = atoi(yytext); return NUMBER; }
@@ -34,8 +36,6 @@ std::string* createString(const char* text) {
 "*"                     { return MUL; }
 "/"                     { return DIV; }
 ";"                     { return SEMICOLON; }
-
-[ \t\n\r]              {}
 .                      { printf("Unknown token:%s\n", yytext); yyterminate(); }
 %%
 

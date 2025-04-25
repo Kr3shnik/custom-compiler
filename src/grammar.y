@@ -40,8 +40,8 @@ std::unique_ptr<NProgram> programRoot;
 %token RPAR LPAR RCUR LCUR
 %token EQUAL
 %token COMMA SEMICOLON
-%token IF ELSE
-%token PLUS MINUS MUL DIV CEQ CNE CLT CLE CGT CGE
+%token IF ELSE RETURN
+%token <stringVal> PLUS MINUS MUL DIV CEQ CNE CLT CLE CGT CGE
 %token WHILE
 
 %right EQUAL
@@ -63,7 +63,7 @@ std::unique_ptr<NProgram> programRoot;
 
 %%
 
-program:        stms                           { programRoot = std::make_unique<NProgram>(std::unique_ptr<NBlock>($1)); }
+program:        stms                            { programRoot = std::make_unique<NProgram>(std::unique_ptr<NBlock>($1)); }
 
 stms:           stmt                            { 
                                                     $$ = new NBlock(); 
@@ -72,10 +72,11 @@ stms:           stmt                            {
                 | stms stmt                     { $1->addStatement(std::unique_ptr<NStatement>($2)); $$ = $1; }
 
 stmt:           var_decl SEMICOLON              { $$ = $1; }
-                | func_decl                     { $$ = $1; }
-| while_stmt                    { $$ = $1; }
+                | RETURN expr SEMICOLON         { $$ = new NReturnStatement(std::unique_ptr<NExpression>($2)); }
                 | expr SEMICOLON                { $$ = new NExpressionStatement(std::unique_ptr<NExpression>($1)); }
-                | if_else_decl                       { $$ = $1; }
+                | func_decl                     { $$ = $1; }
+                | while_stmt                    { $$ = $1; }
+                | if_else_decl                  { $$ = $1; }
 
 block:          LCUR stms RCUR                  { $$ = $2; }
                 | LCUR RCUR                     { $$ = new NBlock(); }
@@ -162,7 +163,7 @@ comparison:     CEQ                             { $$ = CEQ;  }
 
 %%
 
-main(void){
+int main(void){
     int result = yyparse();
     if (result == 0) {
         // Successfully parsed

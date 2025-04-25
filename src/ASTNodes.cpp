@@ -38,16 +38,16 @@ static std::string getTreePrefix(int level, bool isLast, std::vector<bool>& isLa
 // Convert token to string representation
 static std::string opToString(int op) {
     switch (op) {
-        case 268: return "+";
-        case 269: return "-";
-        case 270: return "*";
-        case 271: return "/";
-        case 274: return "=="; // CEQ token
-        case 275: return "!="; // CNE token
-        case 276: return "<";  // CLT token
-        case 277: return "<="; // CLE token
-        case 278: return ">";  // CGT token
-        case 279: return ">="; // CGE token
+        case 271: return "+";
+        case 272: return "-";
+        case 273: return "*";
+        case 274: return "/";
+        case 275: return "==";
+        case 276: return "!=";
+        case 277: return "<"; 
+        case 278: return "<=";
+        case 279: return ">"; 
+        case 280: return ">=";
         default: return "unknown";
     }
 }
@@ -89,7 +89,6 @@ void NNumeric::print(int level) const {
 
 void NBinaryOperator::print(int level) const {
     static std::vector<bool> isLastChild(100, false);
-    std::cout << op;
     std::cout << getTreePrefix(level, true, isLastChild) << "BINARY_OP: " << opToString(op) << std::endl;
     
     isLastChild[level] = false;  // First child is not the last
@@ -207,4 +206,26 @@ void NProgram::print(int level) const {
     
     isLastChild[level] = true;  // Program has only one child
     block->print(level + 1);
+}
+void NReturnStatement::print(int level) const {
+    static std::vector<bool> isLastChild(100, false);
+    std::cout << getTreePrefix(level, true, isLastChild) << "RETURN_STMT" << std::endl;
+    
+    isLastChild[level] = true;  // This is the last (and only) child
+    expression->print(level + 1);
+}
+void NIfElseStatement::print(int level) const {
+    static std::vector<bool> isLastChild(100, false);
+    
+    std::cout << getTreePrefix(level, true, isLastChild) << "IF" << std::endl;
+    condition->print(level);
+    
+    isLastChild[level] = elseBlock ? true : false;
+    thenBlock->print(level + 1);
+    
+    if (elseBlock) {
+        std::cout << getTreePrefix(level+1, true, isLastChild) << "ELSE" << std::endl;
+        isLastChild[level] = true;
+        elseBlock->print(level + 2);
+    }
 }

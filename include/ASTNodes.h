@@ -6,14 +6,6 @@
 #include <string>
 #include <memory>
 
-// Forward declarations
-class NExpression;
-class NStatement;
-class NBlock;
-class NIdentifier;
-class NVariableDeclaration;
-class NFunctionDeclaration;
-
 // Base AST node class
 class Node {
 public:
@@ -149,20 +141,14 @@ public:
     void print(int indent = 0) const override;
 };
 
-// If statement
-class NIfStatement : public NStatement {
+// Return statement
+class NReturnStatement : public NStatement {
 public:
-    std::unique_ptr<NExpression> condition;
-    std::unique_ptr<NBlock> thenBlock;
-
-    NIfStatement(std::unique_ptr<NExpression> condition, std::unique_ptr<NBlock> thenBlock)
-        : condition(std::move(condition)), thenBlock(std::move(thenBlock)) {}
-
-    void print(int indent = 0) const override {
-        std::cout << std::string(indent, ' ') << "IF" << std::endl;
-        condition->print(indent + 2);
-        thenBlock->print(indent + 2);
-    }
+    std::unique_ptr<NExpression> expression;
+    
+    NReturnStatement(std::unique_ptr<NExpression> expression)
+        : expression(std::move(expression)) {}
+    void print(int indent = 0) const override;
 };
 
 // If-Else statement
@@ -179,15 +165,7 @@ public:
           thenBlock(std::move(thenBlock)), 
           elseBlock(std::move(elseBlock)) {}
 
-    void print(int indent = 0) const override {
-        std::cout << std::string(indent, ' ') << "IF" << std::endl;
-        condition->print(indent + 2);
-        thenBlock->print(indent + 2);
-        if (elseBlock) {
-            std::cout << std::string(indent, ' ') << "ELSE" << std::endl;
-            elseBlock->print(indent + 2);
-        }
-    }
+    void print(int indent = 0) const override;
 };
 // While statement
 class NWhileStatement : public NStatement {
