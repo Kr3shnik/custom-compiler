@@ -13,3 +13,5 @@ test:
 
 clean:
 	rm -rf build/*
+graph:
+	hpp2plantuml -i include/ASTNodes.h | sudo docker run -i ghcr.io/plantuml/plantuml -p  > graph.png
