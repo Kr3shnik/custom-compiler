@@ -187,6 +187,19 @@ void NFunctionDeclaration::print(int level) const {
     }
 }
 
+void NWhileStatement::print(int level) const {
+    static std::vector<bool> isLastChild(100, false);
+    std::cout << getTreePrefix(level, true, isLastChild) << "WHILE_STMT" << std::endl;
+    
+    isLastChild[level] = false;  // Not the last child
+    std::cout << getTreePrefix(level + 1, false, isLastChild) << "CONDITION" << std::endl;
+    condition->print(level + 2);
+    
+    isLastChild[level] = true;  // This is the last child
+    std::cout << getTreePrefix(level + 1, true, isLastChild) << "BODY" << std::endl;
+    block->print(level + 2);
+}
+
 void NProgram::print(int level) const {
     static std::vector<bool> isLastChild(100, false);
     std::cout << "PROGRAM" << std::endl;
