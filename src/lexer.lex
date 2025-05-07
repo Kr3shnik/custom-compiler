@@ -10,8 +10,14 @@ std::string* createString(const char* text) {
 }
 %}
 
+%x COMMENT
+
 %%
-[ \t\n\r]               {}
+"/*"                    { BEGIN(COMMENT); }  /* Enter comment mode */
+<COMMENT>"*/"           { BEGIN(INITIAL); } /* Exit comment mode */
+<COMMENT>.|\n           { /* Ignore everything in comment mode */ }
+
+[ \t\n\r]               {}  /* Skip whitespace */
 "if"                    { return IF; }
 "else"                  { return ELSE; }
 "while"                 { return WHILE; }
