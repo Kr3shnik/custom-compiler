@@ -1,11 +1,13 @@
 int a = 0;
 int add(){
+    int b;
     a == 1;
     a = a + 2;
 }
 int main(){
+    int b;
     add();
 }
 int testing(){
-    int b;
+    float b;
 }

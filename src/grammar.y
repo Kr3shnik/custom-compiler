@@ -82,7 +82,7 @@ stmt:           var_decl SEMICOLON              { $$ = $1; }
                 | if_else_decl                  { $$ = $1; }
 
 block:          LCUR                            { symbolTable.enterScope(); } 
-                stms RCUR                       { 
+                stms RCUR                       {
                                                     $$ = $3; 
                                                     symbolTable.exitScope();
                                                 }
@@ -124,10 +124,7 @@ func_decl:      ident ident LPAR func_param RPAR block
                                                     // Add function to symbol table
                                                     symbolTable.declare($2->name, $1->name, SymbolType::FUNCTION);
                                                     
-                                                    // Function body creates a new scope
-                                                    symbolTable.enterScope();
-                                                    // We would add parameters here in a more complete implementation
-                                                    symbolTable.exitScope();
+                                                    // Remove the enter/exit scope here as the block rule already handles it
                                                     
                                                     delete $4; 
                                                 }

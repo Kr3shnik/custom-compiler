@@ -23,7 +23,8 @@ struct SymbolInfo {
 
 class SymbolTable {
 private:
-    std::vector<std::unordered_map<std::string, std::shared_ptr<SymbolInfo>>> scopes;
+    std::vector<std::unordered_map<std::string, std::shared_ptr<SymbolInfo>>> all_scopes_data;
+    std::vector<size_t> active_scope_indices; // Stack of indices into all_scopes_data
     
 public:
     SymbolTable();
