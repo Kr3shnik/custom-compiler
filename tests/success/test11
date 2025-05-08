@@ -1,0 +1,11 @@
+int a = 0;
+int add(){
+    a == 1;
+    a = a + 2;
+}
+int main(){
+    add();
+}
+int testing(){
+    int b;
+}

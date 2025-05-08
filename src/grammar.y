@@ -6,12 +6,15 @@ extern int yydebug;
 #include <vector>
 #include <memory>
 #include "../include/ASTNodes.h"
+#include "../include/SymbolTable.h" // Add this include
 
 int yylex();
 int yyerror(const char *s);
 
 // Root of the AST
 std::unique_ptr<NProgram> programRoot;
+// Create a symbol table
+SymbolTable symbolTable;
 %}
 
 %define parse.error verbose
@@ -78,8 +81,16 @@ stmt:           var_decl SEMICOLON              { $$ = $1; }
                 | while_stmt                    { $$ = $1; }
                 | if_else_decl                  { $$ = $1; }
 
-block:          LCUR stms RCUR                  { $$ = $2; }
-                | LCUR RCUR                     { $$ = new NBlock(); }
+block:          LCUR                            { symbolTable.enterScope(); } 
+                stms RCUR                       { 
+                                                    $$ = $3; 
+                                                    symbolTable.exitScope();
+                                                }
+                | LCUR RCUR                     { 
+                                                    symbolTable.enterScope();
+                                                    $$ = new NBlock(); 
+                                                    symbolTable.exitScope();
+                                                }
 
 if_else_decl:   IF LPAR expr RPAR block {
                     $$ = new NIfElseStatement(std::unique_ptr<NExpression>($3), std::unique_ptr<NBlock>($5), nullptr);
@@ -90,20 +101,34 @@ if_else_decl:   IF LPAR expr RPAR block {
                                               std::unique_ptr<NBlock>($7));
                 };
 
-var_decl:       ident ident                     {   $$ = new NVariableDeclaration(  std::unique_ptr<NIdentifier>($1), 
-                                                                                    std::unique_ptr<NIdentifier>($2));
+var_decl:       ident ident                     {   
+                                                    $$ = new NVariableDeclaration(std::unique_ptr<NIdentifier>($1), 
+                                                                               std::unique_ptr<NIdentifier>($2));
+                                                    // Add to symbol table
+                                                    symbolTable.declare($2->name, $1->name, SymbolType::VARIABLE);
                                                 }
-                | ident ident EQUAL expr       {    $$ = new NVariableDeclaration(  std::unique_ptr<NIdentifier>($1), 
-                                                                                    std::unique_ptr<NIdentifier>($2), 
-                                                                                    std::unique_ptr<NExpression>($4)); 
+                | ident ident EQUAL expr       {    
+                                                    $$ = new NVariableDeclaration(std::unique_ptr<NIdentifier>($1), 
+                                                                               std::unique_ptr<NIdentifier>($2), 
+                                                                               std::unique_ptr<NExpression>($4)); 
+                                                    // Add to symbol table
+                                                    symbolTable.declare($2->name, $1->name, SymbolType::VARIABLE);
                                                 }
 
 func_decl:      ident ident LPAR func_param RPAR block
                                                 {   
-                                                    $$ = new NFunctionDeclaration( std::unique_ptr<NIdentifier>($1),
-                                                                                std::unique_ptr<NIdentifier>($2),
-                                                                                std::move(*$4),
-                                                                                std::unique_ptr<NBlock>($6));
+                                                    $$ = new NFunctionDeclaration(std::unique_ptr<NIdentifier>($1),
+                                                                              std::unique_ptr<NIdentifier>($2),
+                                                                              std::move(*$4),
+                                                                              std::unique_ptr<NBlock>($6));
+                                                    // Add function to symbol table
+                                                    symbolTable.declare($2->name, $1->name, SymbolType::FUNCTION);
+                                                    
+                                                    // Function body creates a new scope
+                                                    symbolTable.enterScope();
+                                                    // We would add parameters here in a more complete implementation
+                                                    symbolTable.exitScope();
+                                                    
                                                     delete $4; 
                                                 }
 
@@ -170,6 +195,10 @@ int main(void){
         std::cout << "Parsing successful! Dumping AST:" << std::endl;
         if (programRoot) {
             programRoot->print();
+            
+            // Print the symbol table
+            std::cout << "\nSymbol Table Contents:" << std::endl;
+            symbolTable.print();
         }
         return 0;
     } else {
