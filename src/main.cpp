@@ -1,7 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "lexer.cpp"
+#include <vector> // Added for std::vector
+#include "../include/Lexer.h" 
+#include "../include/Parser.h" 
+#include "../include/SymbolTable.h" 
+#include "../include/ASTNodes.h" 
+
+// The old enum token and tokenizer function should be removed or fully commented out if not used.
 /*
 enum token{
     IF,
@@ -24,7 +30,7 @@ token tokenizer(std::string word){
         return RETURN;
     } else if (word == "print") {
         return PRINT;
-    } 
+    }
     else{
         //Check if single chars can give us a clue what the word is
         return IDENTIFIER;
@@ -43,33 +49,39 @@ std::string tokenToString(token t) {
         default: return "UNKNOWN";
     }
 }
+*/
 
-int main() {
-    // Print "Hello, World!" to the console
-    std::cout << "Hello, World!" << std::endl;
+int main(){
+    std::istream& input = std::cin;
 
-    std::fstream file("../tests/success/test7");
-    if (!file) {
-        std::cerr << "Error opening file." << std::endl;
+    Lexer lexer(input);
+    SymbolTable symbolTable; 
+    Parser parser(lexer, symbolTable); 
+
+    try {
+        std::unique_ptr<NProgram> ast = parser.parseProgram();
+        if (ast) { // This check is now more meaningful
+            // Only print AST and Symbol Table if parsing was truly successful (no errors encountered)
+            std::cout << "Parsing successful." << std::endl; // This message might be misleading if errors were recovered from.
+                                                          // Consider changing it or removing it if errors were present.
+                                                          // For the test script, the exit code is what matters most.
+            std::cout << "\n--- Abstract Syntax Tree ---" << std::endl;
+            ast->print(); 
+            std::cout << "\n--- Symbol Table ---" << std::endl;
+            symbolTable.print(); 
+            return 0; // Explicitly return 0 on full success
+        } else {
+            // This block will now be hit if parseProgram returns nullptr due to has_encountered_error
+            std::cerr << "Parsing failed or completed with errors." << std::endl;
+            return 1; // Non-zero exit code for failure
+        }
+    } catch (const ParserError& e) {
+        std::cerr << "Parser Error: " << e.what() << std::endl;
+        return 1;
+    } catch (const std::exception& e) {
+        std::cerr << "An unexpected error occurred: " << e.what() << std::endl;
         return 1;
     }
-    
-    
-    while (file) {
-        std::string word;
-        file >> word;
-        token t = tokenizer(word);
-        std::cout << tokenToString(t) << std::endl;
-    }
-
-    return 0;
-}
-    */
-int main(){
-    std::ifstream file("../tests/success/test1");
-    std::vector<token> tokens = tokenizer(file);
-    for (int i = 0; i < tokens.size(); i++)
-    {
-        std::cout << tokenToString(tokens[i]) << std::endl;
-    }
+    // Should not be reached if logic is correct
+    return 1; 
 }

@@ -4,9 +4,7 @@ all: clean build test
 build:
 	rm -rf build
 	mkdir build
-	flex -o build/lex.yy.c src/lexer.lex
-	bison -t -v -d -o build/parser.tab.c src/grammar.y
-	g++ -g -o build/parser build/lex.yy.c build/parser.tab.c src/ASTNodes.cpp src/SymbolTable.cpp -lfl -std=c++14
+	g++ -g -o build/parser src/main.cpp src/lexer.cpp src/parser.cpp src/ASTNodes.cpp src/SymbolTable.cpp -std=c++14
 
 test:
 	./tests/run_tests.sh
