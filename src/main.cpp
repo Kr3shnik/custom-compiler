@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "token.c++"
+#include "lexer.cpp"
 /*
 enum token{
     IF,

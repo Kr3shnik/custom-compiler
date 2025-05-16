@@ -30,6 +30,7 @@ std::vector<token> tokenizer(std::ifstream &file)
 
     while (file >> word)
     {
+        std::cout << word << std::endl;
         // Check if word is a direct Keyword
         if (word == "if")
         {
