@@ -148,7 +148,7 @@ Token Lexer::getNextToken() {
             if (m_lastChar == '=') {
                 m_lexeme = "!="; advance(); return m_currentToken = Token::CNE;
             }
-            m_lexeme = "!"; return m_currentToken = Token::UNKNOWN; // Or a NOT operator if you add it
+            m_lexeme = "!"; return m_currentToken = Token::UNKNOWN; // Or a NOT
         case '<':
             advance();
             if (m_lastChar == '=') {

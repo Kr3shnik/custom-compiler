@@ -5,7 +5,8 @@
 #include "../include/Lexer.h" 
 #include "../include/Parser.h" 
 #include "../include/SymbolTable.h" 
-#include "../include/ASTNodes.h" 
+#include "../include/ASTNodes.h"
+#include "../include/SemanticAnalyzer.h" 
 
 // The old enum token and tokenizer function should be removed or fully commented out if not used.
 /*
@@ -55,25 +56,51 @@ int main(){
     std::istream& input = std::cin;
 
     Lexer lexer(input);
-    SymbolTable symbolTable; 
-    Parser parser(lexer, symbolTable); 
+    SymbolTable parsingSymbolTable; // For parsing (minimal use)
+    Parser parser(lexer, parsingSymbolTable); 
 
     try {
         std::unique_ptr<NProgram> ast = parser.parseProgram();
-        if (ast) { // This check is now more meaningful
-            // Only print AST and Symbol Table if parsing was truly successful (no errors encountered)
-            std::cout << "Parsing successful." << std::endl; // This message might be misleading if errors were recovered from.
-                                                          // Consider changing it or removing it if errors were present.
-                                                          // For the test script, the exit code is what matters most.
+        if (ast) { 
+            std::cout << "Parsing successful." << std::endl;
+            
+            // Create a fresh symbol table for semantic analysis
+            SymbolTable semanticSymbolTable;
+            SemanticAnalyzer semanticAnalyzer(semanticSymbolTable);
+            bool semanticsOk = semanticAnalyzer.analyze(ast.get());
+            
+            // Report semantic warnings and errors
+            if (semanticAnalyzer.hasWarnings()) {
+                semanticAnalyzer.reportWarnings();
+            }
+            
+            if (semanticAnalyzer.hasErrors()) {
+                semanticAnalyzer.reportErrors();
+                if (semanticAnalyzer.hasFatalErrors()) {
+                    std::cerr << "Compilation failed due to fatal semantic errors." << std::endl;
+                    return 1;
+                }
+                std::cerr << "Compilation completed with semantic errors." << std::endl;
+            }
+            
+            if (semanticsOk && !semanticAnalyzer.hasErrors()) {
+                std::cout << "Semantic analysis successful." << std::endl;
+            }
+            
             std::cout << "\n--- Abstract Syntax Tree ---" << std::endl;
             ast->print(); 
             std::cout << "\n--- Symbol Table ---" << std::endl;
-            symbolTable.print(); 
-            return 0; // Explicitly return 0 on full success
+            semanticSymbolTable.print();
+            
+            // Print semantic analysis summary
+            std::cout << "\n--- Semantic Analysis Summary ---" << std::endl;
+            std::cout << "Errors: " << semanticAnalyzer.getErrorCount() << std::endl;
+            std::cout << "Warnings: " << semanticAnalyzer.getWarningCount() << std::endl;
+            
+            return semanticAnalyzer.hasErrors() ? 1 : 0;
         } else {
-            // This block will now be hit if parseProgram returns nullptr due to has_encountered_error
             std::cerr << "Parsing failed or completed with errors." << std::endl;
-            return 1; // Non-zero exit code for failure
+            return 1;
         }
     } catch (const ParserError& e) {
         std::cerr << "Parser Error: " << e.what() << std::endl;
