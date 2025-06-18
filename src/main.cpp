@@ -7,6 +7,7 @@
 #include "../include/SymbolTable.h" 
 #include "../include/ASTNodes.h"
 #include "../include/SemanticAnalyzer.h" 
+#include "../include/CodeGenerator.h"
 
 // The old enum token and tokenizer function should be removed or fully commented out if not used.
 /*
@@ -52,10 +53,33 @@ std::string tokenToString(token t) {
 }
 */
 
-int main(){
-    std::istream& input = std::cin;
+int main(int argc, char** argv) {
+    std::string inputFilename;
+    std::string outputFilename = "a.o"; // Default output filename
 
-    Lexer lexer(input);
+    if (argc < 2) {
+        std::cerr << "Usage: " << argv[0] << " <input.c> [-o <output.o>]" << std::endl;
+        return 1;
+    }
+
+    inputFilename = argv[1];
+
+    for (int i = 2; i < argc; ++i) {
+        if (std::string(argv[i]) == "-o" && i + 1 < argc) {
+            outputFilename = argv[++i];
+        } else {
+            std::cerr << "Unknown option: " << argv[i] << std::endl;
+            return 1;
+        }
+    }
+
+    std::ifstream inputFile(inputFilename);
+    if (!inputFile.is_open()) {
+        std::cerr << "Error opening input file: " << inputFilename << std::endl;
+        return 1;
+    }
+
+    Lexer lexer(inputFile);
     SymbolTable parsingSymbolTable; // For parsing (minimal use)
     Parser parser(lexer, parsingSymbolTable); 
 
@@ -85,6 +109,17 @@ int main(){
             
             if (semanticsOk && !semanticAnalyzer.hasErrors()) {
                 std::cout << "Semantic analysis successful." << std::endl;
+
+                // --- Code Generation ---
+                std::cout << "\n--- Code Generation ---" << std::endl;
+                CodeGenerator codeGenerator(semanticSymbolTable);
+                try {
+                    codeGenerator.generate(ast.get(), outputFilename);
+                    std::cout << "Object file generated successfully: " << outputFilename << std::endl;
+                } catch (const std::exception& e) {
+                    std::cerr << "Code generation failed: " << e.what() << std::endl;
+                    return 1;
+                }
             }
             
             std::cout << "\n--- Abstract Syntax Tree ---" << std::endl;

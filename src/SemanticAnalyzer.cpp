@@ -341,7 +341,6 @@ void SemanticAnalyzer::analyzeIfElseStatement(NIfElseStatement* ifElse) {
         // Check if condition is boolean-compatible
         std::string condType = getExpressionType(ifElse->condition.get());
         // In many languages, numeric types can be used as conditions
-        // This is a design choice for your language
     }
     
     // Analyze then block

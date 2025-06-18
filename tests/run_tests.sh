@@ -22,7 +22,6 @@ run_parser_tests() {
 
     echo ""
     echo "🔎 Running PARSER SYNTACTIC SUCCESS tests (should pass parsing)..."
-    echo "   (Note: If a test here fails, it's likely a syntactic issue in the test case itself or a parser bug.)"
     for file in tests/parser/success/*; do
         if [ -f "$file" ]; then # Check if file exists
             # For these tests, we only care if the parser accepts the syntax.
