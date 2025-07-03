@@ -302,12 +302,30 @@ llvm::Value* CodeGenerator::visit(NBinaryOperator* node) {
         case Token::MINUS: return builder->CreateSub(L, R, "subtmp");
         case Token::MUL: return builder->CreateMul(L, R, "multmp");
         case Token::DIV: return builder->CreateSDiv(L, R, "divtmp");
-        case Token::CEQ: return builder->CreateICmpEQ(L, R, "eqtmp");
-        case Token::CNE: return builder->CreateICmpNE(L, R, "netmp");
-        case Token::CLT: return builder->CreateICmpSLT(L, R, "lttmp");
-        case Token::CLE: return builder->CreateICmpSLE(L, R, "letmp");
-        case Token::CGT: return builder->CreateICmpSGT(L, R, "gttmp");
-        case Token::CGE: return builder->CreateICmpSGE(L, R, "getmp");
+        case Token::CEQ: {
+            llvm::Value* cmp = builder->CreateICmpEQ(L, R, "eqtmp");
+            return builder->CreateZExt(cmp, llvm::Type::getInt32Ty(*context), "eqext");
+        }
+        case Token::CNE: {
+            llvm::Value* cmp = builder->CreateICmpNE(L, R, "netmp");
+            return builder->CreateZExt(cmp, llvm::Type::getInt32Ty(*context), "neext");
+        }
+        case Token::CLT: {
+            llvm::Value* cmp = builder->CreateICmpSLT(L, R, "lttmp");
+            return builder->CreateZExt(cmp, llvm::Type::getInt32Ty(*context), "ltext");
+        }
+        case Token::CLE: {
+            llvm::Value* cmp = builder->CreateICmpSLE(L, R, "letmp");
+            return builder->CreateZExt(cmp, llvm::Type::getInt32Ty(*context), "leext");
+        }
+        case Token::CGT: {
+            llvm::Value* cmp = builder->CreateICmpSGT(L, R, "gttmp");
+            return builder->CreateZExt(cmp, llvm::Type::getInt32Ty(*context), "gtext");
+        }
+        case Token::CGE: {
+            llvm::Value* cmp = builder->CreateICmpSGE(L, R, "getmp");
+            return builder->CreateZExt(cmp, llvm::Type::getInt32Ty(*context), "geext");
+        }
         default: return nullptr;
     }
 }
